@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Formulário Responsivo</title>
+    <title>Relatório de Trabalho Semanal</title>
 
     <style>
         * {
@@ -93,29 +93,23 @@
 <body>
 
     <div class="container">
-        <h2 class="titulo">Formulário de Informações</h2>
+        <h2 class="titulo">Relatório de Trabalho Semanal</h2>
 
-        <form>
+        <form id="formulario">
 
             <div class="form-grid">
 
                 <div class="form-group">
                     <label for="regiao">Região</label>
-                    <select id="regiao" name="regiao">
-                        <option value="">Selecione</option>
-                        <option>Norte</option>
-                        <option>Sul</option>
-                        <option>Leste</option>
-                        <option>Oeste</option>
+                    <select id="regiao"  onchange="atualizarIgrejas()" required>
+                        <option value="">Selecione a região</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="igreja">Igreja</label>
-                    <select id="igreja" name="igreja">
-                        <option value="">Selecione</option>
-                        <option>Igreja 1</option>
-                        <option>Igreja 2</option>
+                    <select id="igreja" required>
+                        <option value="">Selecione a igreja</option>
                     </select>
                 </div>
 
@@ -126,27 +120,27 @@
 
                 <div class="form-group">
                     <label for="novos_titulos">Novos títulos</label>
-                    <input type="number" id="novos_titulos" name="novos_titulos" min="0">
+                    <input type="number" id="novos_titulos" name="novos_titulos" min="0" required>
                 </div>
 
                 <div class="form-group">
                     <label for="titulos_transferidos">Títulos transferidos</label>
-                    <input type="number" id="titulos_transferidos" name="titulos_transferidos" min="0">
+                    <input type="number" id="titulos_transferidos" name="titulos_transferidos" min="0" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="rg">RG</label>
-                    <input type="number" id="rg" name="rg" min="0">
+                    <label for="rg">Quantidade de RG</label>
+                    <input type="number" id="rg" name="rg" min="0" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="cpf">CPF</label>
-                    <input type="number" id="cpf" name="cpf" min="0">
+                    <label for="cpf">Quantidade de CPF</label>
+                    <input type="number" id="cpf" name="cpf" min="0" required>
                 </div>
 
                 <div class="form-group full">
                     <label for="outros_documentos">Outros documentos</label>
-                    <input type="number" id="outros_documentos" name="outros_documentos" min="0">
+                    <input type="number" id="outros_documentos" name="outros_documentos" min="0" required>
                 </div>
 
             </div>
@@ -156,5 +150,68 @@
         </form>
     </div>
 
+<script>
+const API = "https://script.google.com/macros/s/AKfycbx1flJANfl84_6NvNdfKCH4ScSAuvlRUEJHDe5o5P_A2bgjnB3D96wedkkhYiVxaz5l/exec";
+
+// carrega regiões
+window.onload = () => {
+  fetch(API + "?tipo=regioes")
+    .then(r => r.json())
+    .then(lista => {
+      const select = document.getElementById("regiao");
+      lista.forEach(r => {
+        const opt = document.createElement("option");
+        opt.value = r.id;
+        opt.text = r.nome;
+        select.add(opt);
+      });
+    });
+};
+
+
+// carrega igrejas conforme região
+function atualizarIgrejas() {
+  const regiaoId = document.getElementById("regiao").value;
+  const igreja = document.getElementById("igreja");
+
+  igreja.innerHTML = "<option value=''>Selecione</option>";
+
+  if (!regiaoId) return;
+
+  fetch(API + "?tipo=igrejas&regiao=" + regiaoId)
+    .then(r => r.json())
+    .then(lista => {
+      lista.forEach(i => {
+        const opt = document.createElement("option");
+        opt.value = i.id;
+        opt.text = i.nome;
+        igreja.add(opt);
+      });
+    });
+}
+
+
+// envio do formulário
+document.getElementById("formulario").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  fetch(API, {
+    method: "POST",
+    body: JSON.stringify({
+      regiao: document.getElementById("regiao").value,
+      igreja: document.getElementById("igreja").value,
+      nome: document.getElementById("nome").value,
+      novos_titulos: document.getElementById("novos_titulos").value,
+      titulos_transferidos: document.getElementById("titulos_transferidos").value,
+      rg: document.getElementById("rg").value,
+      cpf: document.getElementById("cpf").value
+    })
+  })
+  .then(() => alert("Dados enviados com sucesso!"))
+  .catch(() => alert("Erro ao enviar"));
+});
+
+</script>
+    
 </body>
 </html>
