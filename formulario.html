@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário Responsivo</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 2px solid #006400;
+            border-radius: 10px;
+        }
+
+        .titulo {
+            text-align: center;
+            color: #006400;
+            margin-bottom: 25px;
+        }
+
+        /* GRID RESPONSIVO */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        input, select {
+            padding: 10px;
+            border: 1px solid #000;
+            border-radius: 6px;
+            font-size: 15px;
+            width: 100%;
+        }
+
+        input[type="number"] {
+            text-align: center;
+        }
+
+        /* Campos que ocupam linha inteira */
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .btn-enviar {
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #006400;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn-enviar:hover {
+            background-color: #004d00;
+        }
+
+        /* MOBILE */
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2 class="titulo">Formulário de Informações</h2>
+
+        <form>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="regiao">Região</label>
+                    <select id="regiao" name="regiao">
+                        <option value="">Selecione</option>
+                        <option>Norte</option>
+                        <option>Sul</option>
+                        <option>Leste</option>
+                        <option>Oeste</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="igreja">Igreja</label>
+                    <select id="igreja" name="igreja">
+                        <option value="">Selecione</option>
+                        <option>Igreja 1</option>
+                        <option>Igreja 2</option>
+                    </select>
+                </div>
+
+                <div class="form-group full">
+                    <label for="nome">Nome de quem preencheu</label>
+                    <input type="text" id="nome" name="nome" placeholder="Digite o nome">
+                </div>
+
+                <div class="form-group">
+                    <label for="novos_titulos">Novos títulos</label>
+                    <input type="number" id="novos_titulos" name="novos_titulos" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="titulos_transferidos">Títulos transferidos</label>
+                    <input type="number" id="titulos_transferidos" name="titulos_transferidos" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="rg">RG</label>
+                    <input type="number" id="rg" name="rg" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="cpf">CPF</label>
+                    <input type="number" id="cpf" name="cpf" min="0">
+                </div>
+
+                <div class="form-group full">
+                    <label for="outros_documentos">Outros documentos</label>
+                    <input type="number" id="outros_documentos" name="outros_documentos" min="0">
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn-enviar">Enviar</button>
+
+        </form>
+    </div>
+
+</body>
+</html>
